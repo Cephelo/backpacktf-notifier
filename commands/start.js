@@ -1,5 +1,5 @@
 const { startLoop } = require('../util/notif-loop.js')
-const allow = true
+let allow = true
 
 module.exports = {
     name: "start",
@@ -8,14 +8,14 @@ module.exports = {
     run: async ({bot, message, args}) => {
         try {
             if (allow) {
-                !allow
+                allow = false
                 console.log('Start command received.')
                 startLoop(message.channel, args, bot)
                 message.reply({ content: 
                     `Starting!  *I'll be automatically checking your notifications every __${process.env.CHECKING_INTERVAL_IN_SECONDS}__ seconds.  ` + 
                     `You can also manually check using the \`${bot.prefix}check\` command.  Keep in mind, when I detect unread notifications, ` + 
-                    `they will appear as read from that point on.*`, allowedMentions: { repliedUser: false }})
-            } else message.reply({ content: 'The bot is already running!', allowedMentions: { repliedUser: false }})
+                    `they will appear as read from that point on.*  __Keep your computer on, or I will stop running__.`, allowedMentions: { repliedUser: false }})
+            } else message.reply({ content: 'I\'m already running, silly!', allowedMentions: { repliedUser: false }})
         } catch (e) {
             console.error(e)
             message.reply({ content: `__An error has occurred__: ${e}`, allowedMentions: { repliedUser: false }})

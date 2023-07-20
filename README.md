@@ -41,23 +41,25 @@ This will prompt you to choose which server of yours the bot will join.  I recom
 ### 6. Open the folder in VSCode
 Open VSCode and then open the folder we unzipped in Step 3.  File > Open Folder > (Select the folder you just unzipped) > Open
 
-Then click the document icon in the top left to enter VSCode's File Explorer.
+Then click the document icon in the top left to enter VSCode's File Explorer, if it's not already open.
+
+Select the file titled ".env"
 
 ### 7. Adding required Discord info
 Navigate back to the "Bot" tab on the left sidebar.
 
-Copy your TOKEN, which can be seen under the bot's username.  If you only see a "Reset Token" button, click it and copy the token that shows up.
+Copy your TOKEN, which can be seen under the bot's username.  If you only see a "Reset Token" button, click it and copy the token that shows up.  Do not share this token anywhere else.
 
-Paste the TOKEN into the "DISCORD_BOT_TOKEN" field in the .env file you should see in VSCode's File Explorer.
+Paste the TOKEN into the "DISCORD_BOT_TOKEN" field in the .env file you should see in VSCode's File Explorer.  If you ever reset your Bot Token, you'll need to update it here too.
 
 Go to Discord and copy your User ID by right-clicking your profile picture.  If you don't see this option, emable "Developer Mode" in your Discord Settings.
 
 Paste your User ID into the "YOUR_DISCORD_USER_ID" field in the .env file.
 
 ### 8. Adding your backpack.tf user token
-Go to https://backpack.tf/connections and copy your User Token.
+Go to https://backpack.tf/connections and copy your User Token.  Do not share this token anywhere else.
 
-Paste your User Token into the "BACKPACKTF_USER_TOKEN" field in the .env file you should see in VSCode's File Explorer.
+Paste your User Token into the "BACKPACKTF_USER_TOKEN" field in the .env file you should see in VSCode's File Explorer.  If you ever generate a new User Token, you'll have to update it here too.
 
 
 If you'd like, you can also change some additional configuration settings:
@@ -70,7 +72,13 @@ Once you're done, it is important you save the .env file.  Do not change ANYTHIN
 ### 9. Starting the bot
 Open the Terminal in VSCode.  Terminal > New Terminal
 
-Type the following text: "node index", then hit Enter.
+First, we need to install two libraries.  These are required for the bot to work.
+
+Type the following text in the Terminal: "npm i discord.js", then hit Enter.  Wait for the process to be complete (roughly 10-20 seconds).
+
+Type the following text in the Terminal: "npm i dotenv", then hit Enter.  Wait for the process to be complete (roughly 5-10 seconds).
+
+Now we can start the bot.  Type the following text in the Terminal: "node index", then hit Enter.
 
 Once the Terminal says "Ready!", navigate to the Discord server you added the bot to in Step 5.
 

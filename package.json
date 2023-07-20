@@ -3,7 +3,7 @@
   "version": "1.0",
   "description": "Pings you in discord when you have a new backpack.tf notification.",
   "main": "index.js",
-  "author": "Cephelo",
+  "author": "@cephelo",
   "dependencies": {
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1"

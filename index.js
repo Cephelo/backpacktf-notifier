@@ -53,7 +53,7 @@ client.on("ready", async () => {
     const guild = client.guilds.cache.get('673072697957154826') // guildId
     if (!guild) return console.error("Target guild not found")
 
-	console.log(`READY!\nHere are my primary commands you can type in discord:\n\t${bot.prefix}commands\n\t${bot.prefix}help\n\t${bot.prefix}start\n\t${bot.prefix}stop`)
+	console.log(`READY!\nHere are some of my commands you can type in discord:\n\t${bot.prefix}commands\n\t${bot.prefix}help\n\t${bot.prefix}start\n\t${bot.prefix}stop`)
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN)
