@@ -3,7 +3,9 @@ require("dotenv").config()
 
 const debug = false
 const checkFreq = parseInt(process.env.CHECKING_INTERVAL_IN_SECONDS) // amount of time in between each notif check
-const delay = async (ms = checkFreq*1000) => new Promise(resolve => setTimeout(resolve, ms))
+const delay = async (ms = checkFreq*500) => new Promise(resolve => setTimeout(resolve, ms))
+const shortDelay = async (ms = 500) => new Promise(resolve => setTimeout(resolve, ms))
+const longDelay = async (ms = checkFreq*1000) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function startLoop(channel, minutes, bot) { // 'minutes' is how long the bot should run for before automatically shutting down.
     /* Debug */ if (debug) {
@@ -28,12 +30,12 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
                 notifEmbed.setTitle(notif.targetUser.name)
                 const next = process.env.NEXT
                 notifEmbed.setURL(next.toLowerCase() == 'true' ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications')
-                notifEmbed.setFooter({text: `Listed <t:${notif.bundle.listing.listedAt}:R> - <t:${notif.bundle.listing.listedAt}:F>`})
                 notifEmbed.setThumbnail(notif.targetUser.avatar)
                 notifEmbed.setAuthor({ name: notif.contents.subject })
-                notifEmbed.setDescription(`**${notif.contents.message}**`)
+                notifEmbed.setDescription(`**${notif.contents.message}**\n\nRetrieved <t:${notif.bundle.listing.listedAt}:R> - <t:${notif.bundle.listing.listedAt}:F>`)
             
                 await channel.send({ embeds: [notifEmbed] })
+                await shortDelay();
             }
             await delay();
         }
@@ -52,7 +54,10 @@ async function getNotifs(num, check, channel) {
             throw new Error(`HTTP error! (${num}) Status: ${response.status}`);
         } else if (debug) console.log(`Response OK! (${num})`)
         return response;
-    }).catch(err => console.error(err))
+    }).catch(
+        err => console.error(err),
+        err => channel.send(`Error: *${err}*`)
+        )
 
     let fileJson = undefined
     try {
@@ -62,9 +67,12 @@ async function getNotifs(num, check, channel) {
         if (fetchJson == undefined) {
             const timeUntilRetry =  `<t:${((Date.now() / 1000) + checkFreq + 2).toString().split('.')[0]}:R>`
             const failMessage = await channel.send(`Notifications have returned as \`undefined\`.  ${check ? '' : '__Retrying ' + timeUntilRetry + '...__'}`)
-            await delay();
+            await longDelay();
             if (!check) await failMessage.edit('~~Notifications have returned as \`undefined\`.~~  __Retry attempted__.  *If there is no error message, the attempt was successful.*')
-        } else console.log(`Error parsing JSON: ${error}`) }
+        } else {
+            console.log(`Error parsing JSON: ${error}`) }
+            channel.send(`Error parsing notification input: ${error}`)
+        }
     return fileJson
 }
 
