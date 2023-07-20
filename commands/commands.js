@@ -6,7 +6,7 @@ module.exports = {
     run: async ({bot, message, args}) => {
         let commandArray = []
         bot.client.commands.forEach((f) => {
-            commandArray.push(`\`${bot.prefix}${f.name}\` - *${f.desc}*`)
+            commandArray.push(`${commandArray.length+1}. \`${bot.prefix}${f.name}\` - *${f.desc}*`)
         })
         message.reply({ content: `I have ${commandArray.length} commands:\n${commandArray.join('\n')}`, allowedMentions: { repliedUser: false }})
     }

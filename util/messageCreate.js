@@ -17,7 +17,7 @@ module.exports = {
         catch (err) {
             let errMsg = err.toString()
             if (errMsg.startsWith("?")) await message.reply(errMsg.slice(1))
-            else console.error(err)
+            else console.error(`[${Date.now()}] ${err}`)
         }
     }
 }

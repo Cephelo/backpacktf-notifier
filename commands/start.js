@@ -14,10 +14,12 @@ module.exports = {
                 message.reply({ content: 
                     `Starting!  *I'll be automatically checking your notifications every __${process.env.CHECKING_INTERVAL_IN_SECONDS}__ seconds.  ` + 
                     `You can also manually check using the \`${bot.prefix}check\` command.  Keep in mind, when I detect unread notifications, ` + 
-                    `they will appear as read from that point on.*  __Keep your computer on, or I will stop running__.`, allowedMentions: { repliedUser: false }})
+                    `they will appear as read from that point on.  Notifications will appear in this channel.  To use a different channel, ` + 
+                    `use \`${bot.prefix}stop\`, restart me, and use the \`${bot.prefix}start\` command there instead.*  __Keep your computer on, ` + 
+                    `or I will stop running__!`, allowedMentions: { repliedUser: false }})
             } else message.reply({ content: 'I\'m already running, silly!', allowedMentions: { repliedUser: false }})
         } catch (e) {
-            console.error(e)
+            console.error(`[${Date.now()}] ${e}`)
             message.reply({ content: `__An error has occurred__: ${e}`, allowedMentions: { repliedUser: false }})
         }
     }

@@ -46,15 +46,17 @@ Then click the document icon in the top left to enter VSCode's File Explorer, if
 Select the file titled ".env"
 
 ### 7. Adding required Discord info
-Navigate back to the "Bot" tab on the left sidebar.
+Navigate back to the "Bot" tab on the left sidebar, like in Step 4.
 
 Copy your TOKEN, which can be seen under the bot's username.  If you only see a "Reset Token" button, click it and copy the token that shows up.  Do not share this token anywhere else.
 
 Paste the TOKEN into the "DISCORD_BOT_TOKEN" field in the .env file you should see in VSCode's File Explorer.  If you ever reset your Bot Token, you'll need to update it here too.
 
-Go to Discord and copy your User ID by right-clicking your profile picture.  If you don't see this option, emable "Developer Mode" in your Discord Settings.
+Go to Discord and copy your User ID by right-clicking your profile picture.  If you don't see this option, enable "Developer Mode" in your Discord Settings.
 
 Paste your User ID into the "YOUR_DISCORD_USER_ID" field in the .env file.
+
+Go to Discord and copy the Server ID by right-clicking the server's icon.  Paste the Server ID into the "YOUR_DISCORD_SERVER_ID" field in the .env file.
 
 ### 8. Adding your backpack.tf user token
 Go to https://backpack.tf/connections and copy your User Token.  Do not share this token anywhere else.
@@ -64,8 +66,9 @@ Paste your User Token into the "BACKPACKTF_USER_TOKEN" field in the .env file yo
 
 If you'd like, you can also change some additional configuration settings:
 - "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  I recommend keeping this value at 30 or higher.
+- "PING_USER" is a true/false option, and changes whether the bot will actually ping you with notifications, or just send a message.  This is in case you want to set the channel's notification settings to "All Messages" and don't need the extra ping.  True by default.
 - "DISCORD_PREFIX" will be the prefix for the commands you use in discord to control the bot.
-- "NEXT" is a true or false option, and changes whether the bot will link to the classic backpack.tf site, or the beta next.backpack.tf site.
+- "NEXT" is a true/false option, and changes whether the bot will link to the classic backpack.tf site (false), or the beta next.backpack.tf site (true).  False by default.
 
 Once you're done, it is important you save the .env file.  Do not change ANYTHING else besides those six settings, unless you know what you are doing.
 
@@ -83,9 +86,9 @@ Now we can start the bot.  Type the following text in the Terminal: "node index"
 Once the Terminal says "Ready!", navigate to the Discord server you added the bot to in Step 5.
 
 ### 10. Using the bot!
-If you've followed the above steps correctly, you should now be able to use the bot.  When the bot starts up, it should also say some commands you can use in the Terminal, such as !start.
+If you've followed the above steps correctly, you should now be able to use the bot.  When the bot starts up, the Terminal should say some commands you can use in Discord, such as !start.
 
-And that's it!  You should now get pings for your unread backpack.tf notifications.  Keep in mind, you will only get pings as long as both the bot AND your device are running.
+And that's it!  You should now get pings for your unread backpack.tf notifications.  Keep in mind, you will only get pings as long as both the bot AND your device are running.  Notifications will appear in the channel you use the !start command in.  __When the bot detects unread notifications, it will mark them as read.__
 
 ## If you have any questions, need help, have a suggestion, or just wanna talk, feel free to open an Issue, or message me on Discord at @cephelo
 Thanks for visiting!
