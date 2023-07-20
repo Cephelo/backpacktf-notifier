@@ -3,7 +3,8 @@ const allow = true
 
 module.exports = {
     name: "start",
-    desc: `I'll start automatically waiting for backpack.tf notifications, and send them here every ${process.env.CHECKING_INTERVAL_IN_SECONDS} seconds.`,
+    desc: `I'll start automatically waiting for backpack.tf notifications, and send them here every ${process.env.CHECKING_INTERVAL_IN_SECONDS} seconds.\n` + 
+        `\tEnter a number with the command to make me automatically turn off after that many minutes!  __Ex: ${process.env.DISCORD_PREFIX}start 5__`,
     run: async ({bot, message, args}) => {
         try {
             if (allow) {
