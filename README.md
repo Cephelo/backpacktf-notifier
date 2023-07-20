@@ -56,7 +56,7 @@ Go to Discord and copy your User ID by right-clicking your profile picture.  If 
 
 Paste your User ID into the "YOUR_DISCORD_USER_ID" field in the .env file.
 
-Go to Discord and copy the Server ID by right-clicking the server's icon.  Paste the Server ID into the "YOUR_DISCORD_SERVER_ID" field in the .env file.
+Go to Discord and copy the Server ID of the server you made in Step 5 by right-clicking the server's icon.  Paste the Server ID into the "YOUR_DISCORD_SERVER_ID" field in the .env file.
 
 ### 8. Adding your backpack.tf user token
 Go to https://backpack.tf/connections and copy your User Token.  Do not share this token anywhere else.
