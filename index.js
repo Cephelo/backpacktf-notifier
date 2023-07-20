@@ -3,7 +3,7 @@ const fs = require("fs")
 require("dotenv").config()
 
 if (process.env.YOUR_DISCORD_USER_ID == '' || process.env.DISCORD_BOT_TOKEN == '' || process.env.BACKPACKTF_USER_TOKEN == '' || 
-	process.env.CHECKING_INTERVAL_IN_SECONDS == '' || process.env.DISCORD_PREFIX == '') {
+	process.env.CHECKING_INTERVAL_IN_SECONDS == '' || process.env.DISCORD_PREFIX == '' || process.env.YOUR_DISCORD_SERVER_ID == '') {
 		console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')
 		console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')
 		console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')

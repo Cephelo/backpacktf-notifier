@@ -11,7 +11,8 @@ module.exports = {
         let command = client.commands.get(cmdstr)
         if (!command) return
 
-        if (owner != message.member.id) return message.reply({ content: `This command is only available to <@${owner}>.`, ephemeral: true })
+        if (owner != message.member.id) return message.reply({ content: `This command is only available to <@${owner}>.`,
+            allowedMentions: { repliedUser: false }})
 
         try { await command.run({bot, message, args}) } 
         catch (err) {
