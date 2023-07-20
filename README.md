@@ -2,6 +2,8 @@
 Greetings!  Welcome to **backpacktf-notifier**, a discord bot that pings you when you have a new backpack.tf notification.
 The bot will automatically check for unread notifications every 30 secondsby default!
 
+### Current Version: 1.1
+
 # Setup
 First of all, you'll need to make your own discord application.  Here's how:
 

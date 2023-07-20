@@ -50,6 +50,7 @@ console.log(`Loaded ${client.commands.size} commands`)
 
 client.on("ready", async () => {
 	console.log(`Discord.js version: ${require('discord.js').version}`)
+	console.log(`backpacktf-notifier version: ${package.version}`)
 	console.log("Logged in as " + bot.client.user.tag)
     
     const guild = client.guilds.cache.get(process.env.YOUR_DISCORD_SERVER_ID) // guildId
