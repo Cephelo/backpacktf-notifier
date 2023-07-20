@@ -9,9 +9,9 @@ const delay = async (ms = checkFreq*500) => new Promise(resolve => setTimeout(re
 const shortDelay = async (ms = 500) => new Promise(resolve => setTimeout(resolve, ms))
 const longDelay = async (ms = checkFreq*1000) => new Promise(resolve => setTimeout(resolve, ms))
 
-function stopLoop(channel) {
+async function stopLoop(channel) {
     console.log('To restart the bot, type "node index" into the VSCode Terminal.')
-    channel.send('To restart the bot, type \`node index\` into the VSCode Terminal.')
+    await channel.send('To restart the bot, type \`node index\` into the VSCode Terminal.')
     process.exit(0)
 }
 
