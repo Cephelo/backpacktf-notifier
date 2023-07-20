@@ -8,6 +8,13 @@ const shortDelay = async (ms = 500) => new Promise(resolve => setTimeout(resolve
 const longDelay = async (ms = checkFreq*1000) => new Promise(resolve => setTimeout(resolve, ms))
 
 async function startLoop(channel, minutes, bot) { // 'minutes' is how long the bot should run for before automatically shutting down.
+
+    if (checkFreq < 10) {
+        console.log(`\`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Shutting down.`)
+        await channel.send(`\`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
+        process.exit(0)
+    }
+
     /* Debug */ if (debug) {
         if (minutes != '') console.log(`Minutes to run: ${minutes ? minutes : 'Until Stop'}; is Number: ${!isNaN(minutes)}`)
         else console.log('Running until a stop command is received or the bot is turned off.')
@@ -28,14 +35,16 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
                 else if (notif.bundle.listing.intent == 'buy') notifEmbed.setColor(0x0c8cc3)
                 else notifEmbed.setColor(0x233246)
                 notifEmbed.setTitle(notif.targetUser.name)
-                const next = process.env.NEXT
-                notifEmbed.setURL(next.toLowerCase() == 'true' ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications')
+                const next = process.env.NEXT.toLowerCase() == 'true'
+                notifEmbed.setURL(next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications')
                 notifEmbed.setThumbnail(notif.targetUser.avatar)
-                notifEmbed.setAuthor({ name: notif.contents.subject })
-                notifEmbed.setDescription(`**${notif.contents.message}**\n\nRetrieved <t:${notif.bundle.listing.listedAt}:R> - <t:${notif.bundle.listing.listedAt}:F>`)
+                notifEmbed.setAuthor({ name: notif.contents.subject, url: next ? `https://next.backpack.tf${notif.contents.nuxtUrl}`: `https://backpack.tf${notif.contents.url}` })
+                notifEmbed.setDescription(`**${notif.contents.message}**\n\nListed <t:${notif.bundle.listing.listedAt}:R> - <t:${notif.bundle.listing.listedAt}:F>\n*Bumped <t:${notif.bundle.listing.bumpedAt}:R> - <t:${notif.bundle.listing.bumpedAt}:F>*`)
             
                 await channel.send({ embeds: [notifEmbed] })
                 await shortDelay();
+                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Too many alerts?  If so, you can always change your them: <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
+                if (Math.floor(Math.random() * 100) < 3) await channel.send(`Remeber to delete your read alerts once in a while!  <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
             }
             await delay();
         }

@@ -20,7 +20,7 @@ let bot = {
 	owner: process.env.YOUR_DISCORD_USER_ID
 }
 
-// Load messageCreate.js Event
+// Load messageCreate.js event
 const event = require(`./util/messageCreate.js`)
 client.on("messageCreate", (message) => {
 	try { event.run(bot, message) }
