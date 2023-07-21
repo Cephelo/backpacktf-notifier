@@ -56,7 +56,7 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
                 await channel.send({ embeds: [notifEmbed] })
                 await shortDelay();
                 if (Math.floor(Math.random() * 100) < 5) await channel.send(`Too many alerts?  If so, you can always change them: <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
-                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remeber to delete your read noitifcations once in a while!  <${next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'}>`)
+                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remeber to delete your read notifcations once in a while!  <${next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'}>`)
                 if (Math.floor(Math.random() * 100) < 8) await channel.send(`Getting any errors?  Be sure to report them on the github, or message <@492460099747708928> on discord!  <https://github.com/Cephelo/backpacktf-notifier/issues>`)
                 if (Math.floor(Math.random() * 100) < 10) await channel.send(`Remember to check the github for updates!  <https://github.com/Cephelo/backpacktf-notifier/releases>`)
             }
