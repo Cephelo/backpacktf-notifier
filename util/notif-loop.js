@@ -71,7 +71,7 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
 }
 
 async function getNotifs(num, check, channel) {
-    getNotifsJson(num, check, channel, 'notifications')
+    return await getNotifsJson(num, check, channel, 'notifications')
 }
 
 async function getNotifsJson(num, check, channel, category) {
