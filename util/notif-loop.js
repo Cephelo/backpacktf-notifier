@@ -4,6 +4,7 @@ require("dotenv").config()
 const debug = false
 const checkFreq = parseInt(process.env.CHECKING_INTERVAL_IN_SECONDS) // amount of time in between each notif check
 const enableMentions = process.env.PING_USER.toLowerCase() == 'true' ? true : false
+/* Debug */ if (true) console.log(`enableMentions: ${enableMentions}`)
 
 const delay = async (ms = checkFreq*500) => new Promise(resolve => setTimeout(resolve, ms))
 const shortDelay = async (ms = 500) => new Promise(resolve => setTimeout(resolve, ms))
@@ -35,10 +36,11 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
         notifs = await getNotifs(`#${i+1}`, false, channel)
         if (notifs != undefined) {
             /* Debug */ if (debug) console.log(`${notifs.length} unread notification${notifs.length == 1 ? '' : 's'}. (#${i+1})`)
-            if (notifs.length > 0) await channel.send({ content: `${enableMentions ? '<@'+bot.owner+'> ':''}You have ` + 
-                `${notifs.length == 1 ? 'a backpack.tf notification' : notifs.length + ' backpack.tf notifications'}!`, 
-                allowedMentions: { repliedUser: enableMentions }})
-
+            if (notifs.length > 0) {
+                const haveNotifMessage = `${enableMentions ? '<@'+bot.owner+'> ':''}You have ${notifs.length == 1 ? 'a backpack.tf notification' : notifs.length + ' backpack.tf notifications'}!`
+                if (enableMentions) await channel.send(haveNotifMessage)
+                else await channel.send({ content: haveNotifMessage, allowedMentions: { repliedUser: false }})
+            }
             for (const notif of notifs) {
                 let notifEmbed = new EmbedBuilder()
                 if (notif.bundle.listing.intent == 'sell') notifEmbed.setColor(0x389902)
@@ -54,20 +56,26 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
                 await channel.send({ embeds: [notifEmbed] })
                 await shortDelay();
                 if (Math.floor(Math.random() * 100) < 5) await channel.send(`Too many alerts?  If so, you can always change them: <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
-                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remeber to delete your read alerts once in a while!  <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
-                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Getting any errors?  Be sure to report them on the github, or message <@492460099747708928> on discord!  <https://github.com/Cephelo/backpacktf-notifier/issues>`)
-                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remember to check the github for updates!  <https://github.com/Cephelo/backpacktf-notifier/releases>`)
+                if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remeber to delete your read noitifcations once in a while!  <${next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'}>`)
+                if (Math.floor(Math.random() * 100) < 8) await channel.send(`Getting any errors?  Be sure to report them on the github, or message <@492460099747708928> on discord!  <https://github.com/Cephelo/backpacktf-notifier/issues>`)
+                if (Math.floor(Math.random() * 100) < 10) await channel.send(`Remember to check the github for updates!  <https://github.com/Cephelo/backpacktf-notifier/releases>`)
             }
             await delay();
         }
     }
     console.log(`${minutes} minute${minutes == 1 ? ' has' : 's have'} passed, shutting down.`)
-    await channel.send({ content: `${enableMentions ? '<@'+bot.owner+'> ':''}${minutes} minute${minutes == 1 ? ' has' : 's have'} passed.  Stopping!`, allowedMentions: { repliedUser: enableMentions }})
+    const minutesPassedMessage = `${enableMentions ? '<@'+bot.owner+'> ':''}${minutes} minute${minutes == 1 ? ' has' : 's have'} passed.  Stopping!`
+    if (enableMentions) await channel.send(minutesPassedMessage)
+    else await channel.send({ content: minutesPassedMessage, allowedMentions: { repliedUser: false }})
     stopLoop(channel)
 }
 
 async function getNotifs(num, check, channel) {
-    const fetchJson = await fetch(`https://backpack.tf/api/notifications${check ? '' : '/unread'}?token=${process.env.BACKPACKTF_USER_TOKEN}`, { method: check ? 'GET' : 'POST' }
+    getNotifsJson(num, check, channel, 'notifications')
+}
+
+async function getNotifsJson(num, check, channel, category) {
+    const fetchJson = await fetch(`https://backpack.tf/api/${category}${check ? '' : '/unread'}?token=${process.env.BACKPACKTF_USER_TOKEN}`, { method: check ? 'GET' : 'POST' }
     ).then((response) => {
         if (!response.ok) {
             channel.send(`${enableMentions ? '<@'+bot.owner+'> ':''}__An error has occurred__.  ${response.status == 401 ? 'Your backpack.tf User Token is invalid or incorrect.' : 
@@ -97,4 +105,4 @@ async function getNotifs(num, check, channel) {
     return fileJson
 }
 
-module.exports = { startLoop, getNotifs, stopLoop }
+module.exports = { startLoop, getNotifs, stopLoop, getNotifsJson }

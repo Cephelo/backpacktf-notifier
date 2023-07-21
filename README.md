@@ -1,8 +1,8 @@
 # backpacktf-notifier
 Greetings!  Welcome to **backpacktf-notifier**, a discord bot that pings you when you have a new backpack.tf notification.
-The bot will automatically check for unread notifications every 30 secondsby default!
+The bot will automatically check for unread notifications every 30 seconds by default!
 
-### Current Version: 1.1
+### Current Version: 1.1.1
 
 # Setup
 First of all, you'll need to make your own discord application.  Here's how:
@@ -16,7 +16,7 @@ If you have lower than v16.0.0 or get an error, install NodeJS from here: https:
 If you don't already have it, you can get it here: https://code.visualstudio.com/download
 
 ### 3. Download the source code
-Download the latest source code release from the releases tab on the right, and unzip the file - you should have a folder now.
+Download the latest source code release from the releases tab on the right, and unzip the file - you should now have a folder called "backpacktf-notifier-Version-1.1.1 (or something like that).
 
 Move that folder to wherever you like, preferably somewhere easily accessible.
 
@@ -25,9 +25,7 @@ First, go to https://discord.com/developers/applications
 
 Then click "New Application" in the top right, name it whatever you want.
 
-Navigate to the "Bot" tab on the left sidebar, click "Add Bot", then "Confirm".
-
-Scroll down and enable the "MESSAGE CONTENT INTENT" switch.
+Once you've made an application, navigate to the "Bot" tab on the left sidebar, scroll down, and enable the "MESSAGE CONTENT INTENT" switch.
 
 ### 5. Add the bot to your server
 Navigate to the "OAuth2" tab on the left sidebar, and click "URL Generator".
