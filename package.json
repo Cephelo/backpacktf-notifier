@@ -1,6 +1,6 @@
 {
   "name": "backpacktf-notifier",
-  "version": "1.1.1a",
+  "version": "1.1.2",
   "description": "Pings you in discord when you have a new backpack.tf notification.",
   "main": "index.js",
   "author": "@cephelo",
