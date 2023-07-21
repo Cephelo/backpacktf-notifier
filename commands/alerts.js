@@ -7,7 +7,7 @@ module.exports = {
         try {
             console.log('Alerts command received.')
 
-            const alerts = await getNotifsJson('alerts check', true, message.channel, 'classifieds/alerts')
+            const alerts = await getNotifsJson('alerts check', true, message.channel, 'classifieds/alerts', bot)
             if (alerts != undefined) {
                 let alertsStrings = []
                 alertsStrings.push(`__You currently have ${alerts.results.length} active alert${alerts.results.length == 1 ? '' : 's'}__.`)

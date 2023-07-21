@@ -4,11 +4,7 @@ require("dotenv").config()
 const debug = false
 const checkFreq = parseInt(process.env.CHECKING_INTERVAL_IN_SECONDS) // amount of time in between each notif check
 const enableMentions = process.env.PING_USER.toLowerCase() == 'true' ? true : false
-/* Debug */ if (true) console.log(`enableMentions: ${enableMentions}`)
-
-const delay = async (ms = checkFreq*500) => new Promise(resolve => setTimeout(resolve, ms))
-const shortDelay = async (ms = 500) => new Promise(resolve => setTimeout(resolve, ms))
-const longDelay = async (ms = checkFreq*1000) => new Promise(resolve => setTimeout(resolve, ms))
+async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 
 async function stopLoop(channel) {
     console.log('To restart the bot, type "node index" into the VSCode Terminal.')
@@ -33,7 +29,7 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
 
     let notifs = undefined
     for (let i = 0; i < count; i++) {
-        notifs = await getNotifs(`#${i+1}`, false, channel)
+        notifs = await getNotifsJson(`#${i+1}`, false, channel, 'notifications', bot)
         if (notifs != undefined) {
             /* Debug */ if (debug) console.log(`${notifs.length} unread notification${notifs.length == 1 ? '' : 's'}. (#${i+1})`)
             if (notifs.length > 0) {
@@ -54,13 +50,13 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
                 notifEmbed.setDescription(`**${notif.contents.message}**\n\nListed <t:${notif.bundle.listing.listedAt}:R> - <t:${notif.bundle.listing.listedAt}:F>\n*Bumped <t:${notif.bundle.listing.bumpedAt}:R> - <t:${notif.bundle.listing.bumpedAt}:F>*`)
             
                 await channel.send({ embeds: [notifEmbed] })
-                await shortDelay();
+                await delay(500)
                 if (Math.floor(Math.random() * 100) < 5) await channel.send(`Too many alerts?  If so, you can always change them: <${next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
                 if (Math.floor(Math.random() * 100) < 5) await channel.send(`Remeber to delete your read notifcations once in a while!  <${next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'}>`)
                 if (Math.floor(Math.random() * 100) < 8) await channel.send(`Getting any errors?  Be sure to report them on the github, or message <@492460099747708928> on discord!  <https://github.com/Cephelo/backpacktf-notifier/issues>`)
                 if (Math.floor(Math.random() * 100) < 10) await channel.send(`Remember to check the github for updates!  <https://github.com/Cephelo/backpacktf-notifier/releases>`)
             }
-            await delay();
+            await delay((notifs.length > checkFreq*2 ? 500 : (checkFreq*1000)-(500*notifs.length)))
         }
     }
     console.log(`${minutes} minute${minutes == 1 ? ' has' : 's have'} passed, shutting down.`)
@@ -70,12 +66,8 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
     stopLoop(channel)
 }
 
-async function getNotifs(num, check, channel) {
-    return await getNotifsJson(num, check, channel, 'notifications')
-}
-
-async function getNotifsJson(num, check, channel, category) {
-    const fetchJson = await fetch(`https://backpack.tf/api/${category}${check ? '' : '/unread'}?token=${process.env.BACKPACKTF_USER_TOKEN}`, { method: check ? 'GET' : 'POST' }
+async function getNotifsJson(num, isCommand, channel, category, bot) {
+    const fetchJson = await fetch(`https://backpack.tf/api/${category}${isCommand ? '' : '/unread'}?token=${process.env.BACKPACKTF_USER_TOKEN}`, { method: isCommand ? 'GET' : 'POST' }
     ).then((response) => {
         if (!response.ok) {
             channel.send(`${enableMentions ? '<@'+bot.owner+'> ':''}__An error has occurred__.  ${response.status == 401 ? 'Your backpack.tf User Token is invalid or incorrect.' : 
@@ -88,21 +80,23 @@ async function getNotifsJson(num, check, channel, category) {
         err => channel.send(`${enableMentions ? '<@'+bot.owner+'> ':''}__An error has occurred__.  *${err}*`)
         )
 
-    let fileJson = undefined
     try {
-        fileJson = await fetchJson.json()
-        //* Debug */ if (debug) console.log(`fileJson (${num}): ${JSON.stringify(fileJson)}`)
+        //* Debug */ if (debug) console.log(`fileJson (${num}): ${JSON.stringify(await fetchJson.json())}`)
+        return await fetchJson.json()
     } catch (error) { 
+        console.log(`[${Date.now()}] Error parsing JSON: ${error}`) 
         if (fetchJson == undefined) {
-            const timeUntilRetry =  `<t:${((Date.now() / 1000) + checkFreq + 2).toString().split('.')[0]}:R>`
-            const failMessage = await channel.send(`Notifications have returned as undefined.  ${check ? '' : '__Retrying ' + timeUntilRetry + '...__'}`)
-            await longDelay();
-            if (!check) await failMessage.edit('*~~Notifications have returned as undefined.~~*  __Retry attempted__.  *If there is no error message, the attempt was successful.*')
-        } else {
-            console.log(`[${Date.now()}] Error parsing JSON: ${error}`) }
-            channel.send(`${enableMentions ? '<@'+bot.owner+'> ':''}__An error has occurred while parsing notification input__: \`${error}\``)
-        }
-    return fileJson
+            console.log('Notifications have returned as undefined.  The error can be seen above.')
+            const failMessage = await channel.send(`Notifications have returned as undefined.  ${isCommand ? '*Try the command again.  If there is not another error message, ' + 
+                'this was just a hiccup.*' : '__Retrying ' + `<t:${((Date.now() / 1000) + checkFreq + 2).toString().split('.')[0]}:R>` + '...__'}`)
+            if (!isCommand) {
+                await delay(checkFreq*1000)
+                await failMessage.edit('*~~Notifications have returned as undefined.~~*  __Retry attempted__.  *If there is not another error message, ' + 
+                'the attempt was successful, and this was just a hiccup.*')
+            }
+        } else channel.send(`${enableMentions ? '<@'+bot.owner+'> ':''}__An error has occurred while parsing notification input__: \`${error}\``)
+        return undefined
+    }
 }
 
-module.exports = { startLoop, getNotifs, stopLoop, getNotifsJson }
+module.exports = { startLoop, stopLoop, getNotifsJson }

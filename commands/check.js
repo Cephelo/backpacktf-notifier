@@ -1,4 +1,4 @@
-const { getNotifs } = require('../util/notif-loop.js')
+const { getNotifsJson } = require('../util/notif-loop.js')
 
 module.exports = {
     name: "check",
@@ -7,7 +7,7 @@ module.exports = {
         try {
             console.log('Check command received.')
 
-            const notifs = await getNotifs('manual check', true, message.channel)
+            const notifs = await getNotifsJson('manual check', true, message.channel, 'notifications', bot)
             if (notifs != undefined) {
                 const notCount = notifs.results.length
                 const unrCount = notifs.results.filter(el => el.unread == true).length
