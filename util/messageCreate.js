@@ -9,10 +9,9 @@ module.exports = {
         const args = message.content.slice(prefix.length).trim().split(/ +/g)
         const cmdstr = args.shift().toLowerCase()
         let command = client.commands.get(cmdstr)
-        if (!command) return
+        if (!command) return message.reply({ content: `That is not a command.  Use \`${prefix}commands\` to see all my commands.`,allowedMentions: { repliedUser: false }})
 
-        if (owner != message.member.id) return message.reply({ content: `This command is only available to <@${owner}>.`,
-            allowedMentions: { repliedUser: false }})
+        if (owner != message.member.id) return message.reply({ content: `This command is only available to <@${owner}>.`, allowedMentions: { repliedUser: false }})
 
         try { await command.run({bot, message, args}) } 
         catch (err) {

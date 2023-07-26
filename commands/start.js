@@ -1,5 +1,6 @@
 const { startLoop } = require('../util/notif-loop.js')
 let allow = true
+async function isRunning() { return allow }
 
 module.exports = {
     name: "start",
@@ -9,7 +10,7 @@ module.exports = {
         try {
             if (allow) {
                 allow = false
-                console.log('Start command received.')
+                console.log(`[${Date.now()}] Start command received.`)
                 startLoop(message.channel, args, bot)
                 message.reply({ content: 
                     `Starting!  *I'll be automatically checking your notifications every __${process.env.CHECKING_INTERVAL_IN_SECONDS}__ seconds.  ` + 
@@ -22,5 +23,6 @@ module.exports = {
             console.error(`[${Date.now()}] ${e}`)
             message.reply({ content: `__An error has occurred__: ${e}`, allowedMentions: { repliedUser: false }})
         }
-    }
+    },
+    isRunning
 }

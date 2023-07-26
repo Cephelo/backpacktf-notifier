@@ -28,7 +28,9 @@ let bot = {
 	client,
 	prefix: process.env.DISCORD_PREFIX,
 	owner: process.env.YOUR_DISCORD_USER_ID,
-	version: package.version
+	version: package.version,
+	invite: '3jfm6XuhyN',
+	next: process.env.NEXT.toLowerCase() == 'true',
 }
 
 // Load messageCreate.js event

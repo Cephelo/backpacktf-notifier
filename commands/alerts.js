@@ -23,7 +23,7 @@ module.exports = {
                         catch { alertsStrings.push(`**${alertsStrings.length}.** *An alert I failed to retrieve for an unknown reason.  Whoops!*`) }
                     }
                 }
-                alertsStrings.push(`Want to see for yourself?  <${process.env.NEXT.toLowerCase() == 'true' ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
+                alertsStrings.push(`Want to see for yourself?  <${bot.next ? 'https://next.backpack.tf/account/classifieds-alerts' : 'https://backpack.tf/alerts'}>`)
                 await message.reply({ content: alertsStrings.join('\n'), allowedMentions: { repliedUser: false }})
             }
         } catch (e) {

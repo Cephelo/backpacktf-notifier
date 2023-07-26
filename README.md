@@ -16,7 +16,7 @@ If you have lower than v16.0.0 or get an error, install NodeJS from here: https:
 If you don't already have it, you can get it here: https://code.visualstudio.com/download
 
 ### 3. Download the source code
-Download the latest source code release from the releases tab on the right, and unzip the file - you should now have a folder called "backpacktf-notifier-Version-1.1.2 (or something like that).
+Download the latest source code release from the releases tab on the right, and unzip the file - you should now have a folder called "backpacktf-notifier-Version-1.2.0 (or something like that).
 
 Move that folder to wherever you like, preferably somewhere easily accessible.
 
@@ -65,7 +65,7 @@ Paste your User Token into the "BACKPACKTF_USER_TOKEN" field in the .env file yo
 
 
 If you'd like, you can also change some additional configuration settings:
-- "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  I recommend keeping this value at 30 or higher.
+- "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  *I recommend keeping this value at 30 or higher.*
 - "PING_USER" is a true/false option, and changes whether the bot will actually ping you with notifications, or just send a message.  This is in case you want to set the channel's notification settings to "All Messages" and don't need the extra ping.  True by default.
 - "DISCORD_PREFIX" will be the prefix for the commands you use in discord to control the bot.
 - "NEXT" is a true/false option, and changes whether the bot will link to the classic backpack.tf site (false), or the beta next.backpack.tf site (true).  False by default.
@@ -81,7 +81,7 @@ Type the following text in the Terminal: "npm i discord.js", then hit Enter.  Wa
 
 Type the following text in the Terminal: "npm i dotenv", then hit Enter.  Wait for the process to be complete (roughly 5-10 seconds).
 
-Now we can start the bot.  Type the following text in the Terminal: "node index", then hit Enter.
+Now we can start the bot.  Type the following text in the Terminal: "node index", then hit Enter.  *Note: You do not need to have VSCode open to do this; instead, you can open a terminal at the location of the main folder, open a new terminal window at that folder, and then type "node index" from there.*
 
 Once the Terminal says "Ready!", navigate to the Discord server you added the bot to in Step 5.
 
@@ -90,5 +90,5 @@ If you've followed the above steps correctly, you should now be able to use the 
 
 And that's it!  You should now get pings for your unread backpack.tf notifications.  Keep in mind, you will only get pings as long as both the bot AND your device are running.  Notifications will appear in the channel you use the !start command in.  __When the bot detects unread notifications, it will mark them as read.__
 
-## If you have any questions, need help, have a suggestion, or just wanna talk, feel free to open an Issue, or message me on Discord at @cephelo
+## If you have any questions, need help, have a suggestion, or just wanna talk, feel free to open an Issue, or join the [discord server](https://discord.gg/3jfm6XuhyN).
 Thanks for visiting!

@@ -5,14 +5,15 @@ module.exports = {
     desc: "Lets you manually check for notifications.",
     run: async ({bot, message, args}) => {
         try {
-            console.log('Check command received.')
+            console.log(`[${Date.now()}] Check command received.`)
 
             const notifs = await getNotifsJson('manual check', true, message.channel, 'notifications', bot)
             if (notifs != undefined) {
                 const notCount = notifs.results.length
                 const unrCount = notifs.results.filter(el => el.unread == true).length
-                const next = process.env.NEXT.toLowerCase() == 'true' ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'
-                await message.reply({ content: `You have ${unrCount} unread notification${unrCount == 1 ? '' : 's'} (${notCount} total).  Want to check for yourself?  <${next}>`, allowedMentions: { repliedUser: false }})
+                await message.reply({ content: `You have ${unrCount} unread notification${unrCount == 1 ? '' : 's'} (${notCount} total).  Want to check for yourself?  ` +
+                    `<${bot.next ? 'https://next.backpack.tf/alerts' : 'https://backpack.tf/notifications'}>\n*Keep in mind, when I detect unread notifications, ` + 
+                    `they will appear as read from that point on.*`, allowedMentions: { repliedUser: false }})
             }                
         } catch (e) {
             console.error(e)
