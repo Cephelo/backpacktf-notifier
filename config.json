@@ -1,9 +1,11 @@
 {
-  "YOUR_DISCORD_USER_ID": "492460099747708928",
-  "YOUR_DISCORD_SERVER_ID": "673072697957154826",
-  "YOUR_DISCORD_CHANNEL_ID": "1131352063301922856",
-  "CHECKING_INTERVAL_IN_SECONDS": "30",
+  "YOUR_DISCORD_USER_ID": "",
+  "YOUR_DISCORD_SERVER_ID": "",
+  "YOUR_DISCORD_CHANNEL_ID": "",
+    "note": "The bot will only respond to commands in this channel.",
   "PING_USER": "true",
   "DISCORD_PREFIX": "!",
-  "NEXT": "true"
+  "NEXT": "false",
+  "CHECKING_INTERVAL_IN_SECONDS": "30",
+    "note2": "Checking Interval cannot be less than 10 seconds.  I recommend keeping it 30 or higher."
 }

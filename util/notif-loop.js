@@ -1,42 +1,40 @@
 const { EmbedBuilder } = require("discord.js");
 const fs = require("fs")
-const config = JSON.parse(fs.readFileSync('./config.json'))
+const config = JSON.parse(fs.readFileSync(`./config.json`))
 require("dotenv").config()
 
+const enableMentions = config.PING_USER.toLowerCase() == 'false' ? false : true
+const checkFreq = parseInt(config.CHECKING_INTERVAL_IN_SECONDS)
 const debug = false
-const checkFreq = parseInt(config.CHECKING_INTERVAL_IN_SECONDS) // amount of time in between each notif check
-const enableMentions = config.PING_USER.toLowerCase() == 'true' ? true : false
 let ignoreErrors = 0
 async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 
 async function stopLoop(channel) {
-  console.log('To restart the bot, type "node index" into the Terminal.')
-  await channel.send('To restart the bot, type \`node index\` into the Terminal.')
+  await channel.send('To restart me, go to <https://replit.com>, click on your backpacktf-notifier repl project, and click Run.  You can also restart me on the Replit mobile app.')
   process.exit(0)
 }
 
 async function startIgnore(minutes) {
   ignoreErrors = Date.now() + (minutes * 60000)
-  console.log(`Ignoring errors until ignoreErrors (${minutes} minute${minutes == 1 ? '' : 's'}).`)
+  console.log(`Ignoring errors for ${minutes} minute${minutes == 1 ? '' : 's'}`)
 }
 
-async function startLoop(channel, minutes, bot) { // 'minutes' is how long the bot should run for before automatically shutting down.
-
-  if (checkFreq < 10) {
+async function startLoop(bot, channel) {
+  if (checkFreq < 10 || !Number.isInteger(checkFreq)) {
     console.log(`\`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Shutting down.`)
-    await channel.send(`\`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
+    await channel.send(`<@${bot.owner}> \`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
     stopLoop(channel)
   }
 
-    /* Debug */ if (debug) {
-    if (minutes != '') console.log(`Minutes to run: ${minutes ? minutes : 'Until Stop'}; is Number: ${!isNaN(minutes)}`)
-    else console.log('Running until a stop command is received or the bot is turned off.')
-  }
-
-  const count = (!isNaN(minutes) && minutes != '' && minutes > 0) ? minutes * (60 / checkFreq) : Number.MAX_SAFE_INTEGER
+  channel.send({ content:
+      `<@${bot.owner}> Starting!  *I'll be automatically checking your notifications every __${checkFreq}__ seconds.  ` +
+      `You can also manually check using the \`${bot.prefix}check\` command.  Keep in mind, when I detect unread notifications, ` +
+      `they will appear as read from that point on.*\n__Here are some of my commands__: \`${bot.prefix}commands\`, \`${bot.prefix}help\`, \`${bot.prefix}stop\``,
+      allowedMentions: { repliedUser: false }
+  })
 
   let notifs = undefined
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
     if (ignoreErrors > 0 && Date.now() > ignoreErrors) {
       console.log('Allocated time has passed, re-enabling error reporting in discord.')
       await channel.send('**I am no longer ignoring errors, as the allocated time has passed.**')
@@ -45,7 +43,7 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
 
     notifs = await getNotifsJson(`#${i + 1}`, false, channel, 'notifications', bot)
     if (notifs != undefined) {
-            /* Debug */ if (debug) console.log(`${notifs.length} unread notification${notifs.length == 1 ? '' : 's'}. (#${i + 1})`)
+      /* Debug */ if (debug) console.log(`${notifs.length} unread notification${notifs.length == 1 ? '' : 's'}. (#${i + 1})`)
       if (notifs.length > 0) {
         const haveNotifMessage = `${enableMentions ? '<@' + bot.owner + '> ' : ''}You have ${notifs.length == 1 ? 'a backpack.tf notification' : notifs.length + ' backpack.tf notifications'}!`
         if (enableMentions) await channel.send(haveNotifMessage)
@@ -73,11 +71,6 @@ async function startLoop(channel, minutes, bot) { // 'minutes' is how long the b
       await delay((notifs.length > checkFreq * 2 ? 500 : (checkFreq * 1000) - (500 * notifs.length)))
     }
   }
-  console.log(`${minutes} minute${minutes == 1 ? ' has' : 's have'} passed, shutting down.`)
-  const minutesPassedMessage = `${enableMentions ? '<@' + bot.owner + '> ' : ''}${minutes} minute${minutes == 1 ? ' has' : 's have'} passed.  Stopping!`
-  if (enableMentions) await channel.send(minutesPassedMessage)
-  else await channel.send({ content: minutesPassedMessage, allowedMentions: { repliedUser: false } })
-  stopLoop(channel)
 }
 
 async function getNotifsJson(num, isCommand, channel, category, bot) {
@@ -123,4 +116,4 @@ async function getNotifsJson(num, isCommand, channel, category, bot) {
   }
 }
 
-module.exports = { startLoop, stopLoop, getNotifsJson, startIgnore, config }
+module.exports = { startLoop, stopLoop, getNotifsJson, startIgnore }

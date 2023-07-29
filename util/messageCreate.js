@@ -3,7 +3,7 @@ module.exports = {
     run: async function runAll(bot, message) {
         const {client, prefix, owner} = bot
 
-        if (!message.guild || message.author.bot) return
+        if (!message.guild || message.author.bot || message.channel.id != bot.channelId) return
         if (!message.content.startsWith(prefix)) return
 
         const args = message.content.slice(prefix.length).trim().split(/ +/g)

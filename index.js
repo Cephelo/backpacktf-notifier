@@ -1,14 +1,13 @@
-const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js");
+const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js")
 const fs = require("fs")
 const config = JSON.parse(fs.readFileSync(`./config.json`))
 require("dotenv").config()
 
 if (config.YOUR_DISCORD_USER_ID == '' || process.env.DISCORD_BOT_TOKEN == '' || process.env.BACKPACKTF_USER_TOKEN == '' ||
-  config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '') {
-  console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')
-  console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')
-  console.log('WARNING: A REQUIRED CONFIG VALUE IS MISSING!  Go to the .env file and add the missing information.')
-  console.log('Once you have added the missing information, you can restart the bot.')
+  config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '' || 
+  config.YOUR_DISCORD_CHANNEL_ID == '' || process.env.UPTIME_ACCOUNT_API_KEY == '') {
+  const warning = 'WARNING: ONE OR MORE REQUIRED CONFIG VALUES ARE MISSING!  Check the config.json file and Secrets tab under the Tools menu for any missing information.\n'
+  console.log(`${warning}${warning}${warning}Once you have added the missing information, you can restart the bot.`)
   process.exit(0)
 }
 
@@ -32,9 +31,8 @@ let bot = {
   version: package.version,
   invite: '3jfm6XuhyN',
   next: config.NEXT.toString().toLowerCase() == 'true',
-  channel: config.YOUR_DISCORD_CHANNEL_ID,
+  channelId: config.YOUR_DISCORD_CHANNEL_ID
 }
-
 
 const { createServer } = require("./util/keepalive.js")
 createServer()
@@ -64,7 +62,18 @@ client.on("ready", async () => {
   const guild = client.guilds.cache.get(config.YOUR_DISCORD_SERVER_ID) // guildId
   if (!guild) return console.error("Target guild not found")
 
-  console.log(`READY!\nHere are some of my commands you can type in discord:\n\t${bot.prefix}commands\n\t${bot.prefix}help\n\t${bot.prefix}start\n\t${bot.prefix}stop`)
+  begin(guild)
+  console.log(`READY!`)
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN)
+
+const { startLoop } = require('./util/notif-loop.js')
+async function begin(guild) {
+  const channel = guild.channels.cache.get(config.YOUR_DISCORD_CHANNEL_ID)
+  try { startLoop(bot, channel) } 
+  catch (e) {
+    console.error(`[${Date.now()}] (startLoop) ${e}`)
+    channel.send({ content: `__An error has occurred__: ${e}`, allowedMentions: { repliedUser: false } })
+  }
+}

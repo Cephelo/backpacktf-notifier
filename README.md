@@ -1,33 +1,21 @@
 # backpacktf-notifier
 Greetings!  Welcome to **backpacktf-notifier**, a discord bot that pings you when you have a new backpack.tf notification.
 The bot will automatically check for unread notifications every 30 seconds by default!
+__Note: You don't need to download anything from github, just follow the tutorial below__.
 
-### Current Version: 1.1.2
+### Current Version: 2.0.0
 
 # Setup
-First of all, you'll need to make your own discord application.  Here's how:
+First of all, you'll need to make your own discord application, and a couple accounts.
 
-### 1. Check if you have the correct version of NodeJS.
-Open the Terminal and type "node -v" without the quotes.  If you have v16.0.0 or higher, go to step 2.
-
-If you have lower than v16.0.0 or get an error, install NodeJS from here: https://nodejs.org/en/download/
-
-### 2. Install Virtual Studio Code
-If you don't already have it, you can get it here: https://code.visualstudio.com/download
-
-### 3. Download the source code
-Download the latest source code release from the releases tab on the right, and unzip the file - you should now have a folder called "backpacktf-notifier-Version-1.2.0 (or something like that).
-
-Move that folder to wherever you like, preferably somewhere easily accessible.
-
-### 4. Create a Discord Application
+### 1. Create a Discord Application
 First, go to https://discord.com/developers/applications
 
 Then click "New Application" in the top right, name it whatever you want.
 
 Once you've made an application, navigate to the "Bot" tab on the left sidebar, scroll down, and enable the "MESSAGE CONTENT INTENT" switch.
 
-### 5. Add the bot to your server
+### 2. Add the bot to your server
 Navigate to the "OAuth2" tab on the left sidebar, and click "URL Generator".
 
 In the first group of checkboxes titled "SCOPE", select "bot" and "applications.commands".  Nothing else.
@@ -38,57 +26,61 @@ Then copy the Generated URL at the bottom of the page and paste it into your bro
 
 This will prompt you to choose which server of yours the bot will join.  I recommend making your own server with just you and the bot in it, since it's easy.
 
-### 6. Open the folder in VSCode
-Open VSCode and then open the folder we unzipped in Step 3.  File > Open Folder > (Select the folder you just unzipped) > Open
+### 3. Replit and Config
+Make a [Replit](https://replit.com/signup) account, if you don't already have one.
 
-Then click the document icon in the top left to enter VSCode's File Explorer, if it's not already open.
+Once that's done, go to [the public backpacktf-notifier Replit project](https://replit.com/@Cephelo/backpacktf-notifier-public) and click "Fork".
 
-Select the file titled ".env"
+Then once everything has loaded, click the file "config.json" on the left sidebar.  This is where you will enter your Discord User ID, Server ID, and Channel ID.
 
-### 7. Adding required Discord info
-Navigate back to the "Bot" tab on the left sidebar, like in Step 4.
+Go to Discord and copy your User ID by right-clicking your profile picture and clicking "Copy User ID".  __If you don't see this option, enable "Developer Mode" in your Discord Settings.__  Paste your User ID into the empty "YOUR_DISCORD_USER_ID" field, inside the quotes.
 
-Copy your TOKEN, which can be seen under the bot's username.  If you only see a "Reset Token" button, click it and copy the token that shows up.  Do not share this token anywhere else.
+Copy the Server ID of the server you made in Step 5 by right-clicking the server's icon and clicking "Copy Server ID".  Paste the Server ID into the empty "YOUR_DISCORD_SERVER_ID" field, inside the quotes.
 
-Paste the TOKEN into the "DISCORD_BOT_TOKEN" field in the .env file you should see in VSCode's File Explorer.  If you ever reset your Bot Token, you'll need to update it here too.
+Choose (or create) the channel you'll want the bot to put pings in, and copy its Channel ID by right-clicking the channel name and clicking "Copy Channel ID".  Paste the Server ID into the empty "YOUR_DISCORD_CHANNEL_ID" field, inside the quotes.
 
-Go to Discord and copy your User ID by right-clicking your profile picture.  If you don't see this option, enable "Developer Mode" in your Discord Settings.
+Then save the config.json file by pressing CTRL+S (CMD+S on mac).
 
-Paste your User ID into the "YOUR_DISCORD_USER_ID" field in the .env file.
-
-Go to Discord and copy the Server ID of the server you made in Step 5 by right-clicking the server's icon.  Paste the Server ID into the "YOUR_DISCORD_SERVER_ID" field in the .env file.
-
-### 8. Adding your backpack.tf user token
-Go to https://backpack.tf/connections and copy your User Token.  Do not share this token anywhere else.
-
-Paste your User Token into the "BACKPACKTF_USER_TOKEN" field in the .env file you should see in VSCode's File Explorer.  If you ever generate a new User Token, you'll have to update it here too.
-
+You can also change some additional settings: 
 
 If you'd like, you can also change some additional configuration settings:
-- "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  *I recommend keeping this value at 30 or higher.*
 - "PING_USER" is a true/false option, and changes whether the bot will actually ping you with notifications, or just send a message.  This is in case you want to set the channel's notification settings to "All Messages" and don't need the extra ping.  True by default.
 - "DISCORD_PREFIX" will be the prefix for the commands you use in discord to control the bot.
 - "NEXT" is a true/false option, and changes whether the bot will link to the classic backpack.tf site (false), or the beta next.backpack.tf site (true).  False by default.
+- "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  *I recommend keeping this value at 30 or higher.*
 
-Once you're done, it is important you save the .env file.  Do not change ANYTHING else besides those six settings, unless you know what you are doing.
+If you changed any of these, save the config.json file again.
 
-### 9. Starting the bot
-Open the Terminal in VSCode.  Terminal > New Terminal
+### 4. Tokens
 
-First, we need to install two libraries.  These are required for the bot to work.
+Now, click the "Tools" tab near the bottom left corner, and then the "Secrets" button.  
 
-Type the following text in the Terminal: "npm i discord.js", then hit Enter.  Wait for the process to be complete (roughly 10-20 seconds).
+Here you will enter some tokens and keys that the bot requires to function.  DO NOT SHARE THESE ANYWHERE ELSE.
 
-Type the following text in the Terminal: "npm i dotenv", then hit Enter.  Wait for the process to be complete (roughly 5-10 seconds).
+Click the three dots on the right of each secret, then "Edit" to enter them.  Be sure to save each one.
 
-Now we can start the bot.  Type the following text in the Terminal: "node index", then hit Enter.  *Note: You do not need to have VSCode open to do this; instead, you can open a terminal at the location of the main folder, open a new terminal window at that folder, and then type "node index" from there.*
+If you ever reset any of your Tokens or Keys, you'll need to update them here too.
 
-Once the Terminal says "Ready!", navigate to the Discord server you added the bot to in Step 5.
+#### 4a. DISCORD_BOT_TOKEN
+Go back to https://discord.com/developers/applications and click on your bot, then navigate back to the "Bot" tab on the left sidebar.
 
-### 10. Using the bot!
-If you've followed the above steps correctly, you should now be able to use the bot.  When the bot starts up, the Terminal should say some commands you can use in Discord, such as !start.
+Copy your TOKEN, which can be seen under the bot's username.  If you only see a "Reset Token" button, click it and copy the token that shows up.
 
-And that's it!  You should now get pings for your unread backpack.tf notifications.  Keep in mind, you will only get pings as long as both the bot AND your device are running.  Notifications will appear in the channel you use the !start command in.  __When the bot detects unread notifications, it will mark them as read.__
+Paste this TOKEN into the "DISCORD_BOT_TOKEN" secret, and click the blue save button.
+
+#### 4b. BACKPACKTF_USER_TOKEN
+Go to https://backpack.tf/connections and copy your User Token.  Paste your User Token into the "BACKPACKTF_USER_TOKEN" secret, and click the blue save button.
+
+#### 4c. UPTIME_ACCOUNT_API_KEY
+Make an [UptimeRobot](https://uptimerobot.com/signUp?ref=website-header) account, if you don't already have one.
+
+Once that's done, hover over your profile in the top right corner and click "My Settings".  Scroll down to the "API Settings" box, and click "Show/hide it" under "Main API Key".
+
+Copy this, paste it into the "UPTIME_ACCOUNT_API_KEY" secret, and click the blue save button.
+
+### 5. Starting the bot
+
+Now we can start the bot.  Click the green "Run" button and watch the console on the right of the screen.  Once the console says "READY!" and you get a ping in the channel you put in the config, you're all set!  The bot will now automatically start checking for unread backpack.tf notifications, even if your computer is off.  It is important to note:  __When the bot detects unread notifications, it will mark them as read.__
 
 ## If you have any questions, need help, have a suggestion, or just wanna talk, feel free to open an Issue, or join the [discord server](https://discord.gg/3jfm6XuhyN).
 Thanks for visiting!
