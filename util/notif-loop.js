@@ -24,9 +24,9 @@ async function startLoop(bot, channel) {
     await channel.send(`<@${bot.owner}> \`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
     stopLoop(channel)
   }
-  console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can manually check by using ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they will appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}stop\n-`)
+  console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can manually check by using ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they'll appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}stop\n-`)
   channel.send('Restarting!  (I was offline)')
-  
+
   let notifs = undefined
   for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
     if (ignoreErrors > 0 && Date.now() > ignoreErrors) {

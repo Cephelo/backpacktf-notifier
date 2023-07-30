@@ -55,6 +55,7 @@ console.log(`Loaded ${client.commands.size} commands`)
 
 require("https").get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
   if (statusCode === 429) {
+    console.log('429 error received from Discord API, killing process.  This repl server is making too many requests to Discord, so this bot won\'t work for a while.  Sorry.')
     process.kill(1)
   } else if (statusCode != 200) console.log(`DiscordAPI Status code: ${statusCode}`)
 })
