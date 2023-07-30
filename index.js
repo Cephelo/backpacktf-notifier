@@ -1,10 +1,9 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js")
 const fs = require("fs")
 const config = JSON.parse(fs.readFileSync(`./config.json`))
-require("dotenv").config()
 
 if (config.YOUR_DISCORD_USER_ID == '' || process.env.DISCORD_BOT_TOKEN == '' || process.env.BACKPACKTF_USER_TOKEN == '' ||
-  config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '' || 
+  config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '' ||
   config.YOUR_DISCORD_CHANNEL_ID == '' || process.env.UPTIME_ACCOUNT_API_KEY == '') {
   const warning = 'WARNING: ONE OR MORE REQUIRED CONFIG VALUES ARE MISSING!  Check the config.json file and Secrets tab under the Tools menu for any missing information.\n'
   console.log(`${warning}${warning}${warning}Once you have added the missing information, you can restart the bot.`)
@@ -54,6 +53,12 @@ commands.forEach((f) => {
 })
 console.log(`Loaded ${client.commands.size} commands`)
 
+require("https").get(`https://discord.com/api/v10/gateway`, ({ statusCode }) => {
+  if (statusCode === 429) {
+    process.kill(1)
+  } else if (statusCode != 200) console.log(`DiscordAPI Status code: ${statusCode}`)
+})
+
 client.on("ready", async () => {
   console.log(`Discord.js version: ${require('discord.js').version}`)
   console.log(`backpacktf-notifier version: ${package.version}`)
@@ -63,15 +68,23 @@ client.on("ready", async () => {
   if (!guild) return console.error("Target guild not found")
 
   begin(guild)
-  console.log(`READY!`)
+  console.log('READY!')
 })
 
 client.login(process.env.DISCORD_BOT_TOKEN)
 
+client.on('disconnect', function(erMsg, code) {
+  console.log('Bot disconnected from Discord with code', code, 'for reason:')
+  console.error(erMsg)
+  client.connect();
+})
+
+client.on('connect', async () => console.log('Connected!'))
+
 const { startLoop } = require('./util/notif-loop.js')
 async function begin(guild) {
   const channel = guild.channels.cache.get(config.YOUR_DISCORD_CHANNEL_ID)
-  try { startLoop(bot, channel) } 
+  try { startLoop(bot, channel) }
   catch (e) {
     console.error(`[${Date.now()}] (startLoop) ${e}`)
     channel.send({ content: `__An error has occurred__: ${e}`, allowedMentions: { repliedUser: false } })

@@ -1,7 +1,5 @@
 const { EmbedBuilder } = require("discord.js");
-const fs = require("fs")
-const config = JSON.parse(fs.readFileSync(`./config.json`))
-require("dotenv").config()
+const config = JSON.parse(require("fs").readFileSync(`./config.json`))
 
 const enableMentions = config.PING_USER.toLowerCase() == 'false' ? false : true
 const checkFreq = parseInt(config.CHECKING_INTERVAL_IN_SECONDS)
@@ -10,6 +8,7 @@ let ignoreErrors = 0
 async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 
 async function stopLoop(channel) {
+  console.log(`[${Date.now()}] Stopping!`)
   await channel.send('To restart me, go to <https://replit.com>, click on your backpacktf-notifier repl project, and click Run.  You can also restart me on the Replit mobile app.')
   process.exit(0)
 }
@@ -21,18 +20,13 @@ async function startIgnore(minutes) {
 
 async function startLoop(bot, channel) {
   if (checkFreq < 10 || !Number.isInteger(checkFreq)) {
-    console.log(`\`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Shutting down.`)
+    console.log(`"CHECKING_INTERVAL_IN_SECONDS" is set to ${checkFreq}, it must be 10 or more.  Shutting down.`)
     await channel.send(`<@${bot.owner}> \`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
     stopLoop(channel)
   }
-
-  channel.send({ content:
-      `<@${bot.owner}> Starting!  *I'll be automatically checking your notifications every __${checkFreq}__ seconds.  ` +
-      `You can also manually check using the \`${bot.prefix}check\` command.  Keep in mind, when I detect unread notifications, ` +
-      `they will appear as read from that point on.*\n__Here are some of my commands__: \`${bot.prefix}commands\`, \`${bot.prefix}help\`, \`${bot.prefix}stop\``,
-      allowedMentions: { repliedUser: false }
-  })
-
+  console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can manually check by using ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they will appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}stop\n-`)
+  channel.send('Restarting!  (I was offline)')
+  
   let notifs = undefined
   for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
     if (ignoreErrors > 0 && Date.now() > ignoreErrors) {
