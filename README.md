@@ -82,5 +82,5 @@ Copy this, paste it into the "UPTIME_ACCOUNT_API_KEY" secret, and click the blue
 
 Now we can start the bot.  Click the green "Run" button and watch the console on the right of the screen.  Once the console says "READY!" and you get a ping in the channel you put in the config, you're all set!  The bot will now automatically start checking for unread backpack.tf notifications, even if your computer is off.  It is important to note:  __When the bot detects unread notifications, it will mark them as read.__
 
-## If you have any questions, need help, have a suggestion, or just wanna talk, feel free to open an Issue, or join the [discord server](https://discord.gg/3jfm6XuhyN).
+## If you need help, have any questions, feedback or suggestions, or just wanna talk, feel free to open an Issue on github, or join the [discord server](https://discord.gg/3jfm6XuhyN).
 Thanks for visiting!

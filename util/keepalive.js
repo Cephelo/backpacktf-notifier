@@ -1,6 +1,5 @@
 var http = require("http")
 var request = require("request");
-const host = `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase()
 async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 
 /* Debug */
@@ -9,7 +8,7 @@ const logMonitorStatus = false
 const logNewMonitor = false
 const logEditMonitor = false
 
-async function createServer() {
+async function createServer(host) {
   http.createServer(function(req, res) {
     res.write(`I'm running!  Here I am: https://replit.com/@${process.env.REPL_OWNER}/${process.env.REPL_SLUG}`)
     res.end()
@@ -18,12 +17,12 @@ async function createServer() {
 
   console.log(`Just in case, here's your UTR dashboard: https://uptimerobot.com/dashboard.php#mainDashboard`)
   for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
-    checkMonitor(i)
+    checkMonitor(i, host)
     await delay(600000) // Every 10 Minutes
   }
 }
 
-async function checkMonitor(i) {
+async function checkMonitor(i, host) {
   let hasMonitor = false
   const mons = await getMonitors()
   /* Debug */ if (logMonitors) console.log(mons)
@@ -32,16 +31,16 @@ async function checkMonitor(i) {
       if (i == 0) console.log("Uptime monitor verified successfully!"); hasMonitor = mon
     }
   } catch (e) { console.error(`[${Date.now()}] Error: ${e}`) }
-  
+
   if (hasMonitor != false) {
-    /* Debug */ if (hasMonitor.status != 1 && hasMonitor.status != 2 || logMonitorStatus) console.log(`[${Date.now()}] Monitor status: ${hasMonitor.status} (${statusMessage(hasMonitor.status)}) (#${i+1})`)
+    /* Debug */ if (hasMonitor.status != 1 && hasMonitor.status != 2 || logMonitorStatus) console.log(`[${Date.now()}] Monitor status: ${hasMonitor.status} (${statusMessage(hasMonitor.status)}) (#${i + 1})`)
     if (hasMonitor.status != 1 && hasMonitor.status != 2) {
       console.log(`${hasMonitor.status == 0 ? 'Un' : 'Error detected, '}pausing monitor.`)
-      updateMonitor(hasMonitor, false)
+      updateMonitor(hasMonitor, false, host)
     }
   } else {
     console.log('No uptime monitor detected, attempting to create...')
-    updateMonitor(hasMonitor, true)
+    updateMonitor(hasMonitor, true, host)
   }
 }
 
@@ -71,35 +70,35 @@ function statusMessage(status) {
     case 8: return 'Seems Down?'
     case 9: return 'Down'
     default: return 'Unknown'
-  } 
+  }
 }
 
-function updateMonitor(monitor, createNew) {
+function updateMonitor(monitor, createNew, host) {
   const formObj = !createNew ? {
-          api_key: process.env.UPTIME_ACCOUNT_API_KEY,
-          format: 'json',
-          id: monitor.id,
-          status: monitor.status == 0 ? 1 : 0
-        } : {
-          api_key: process.env.UPTIME_ACCOUNT_API_KEY,
-          format: 'json',
-          type: '1',
-          url: host,
-          friendly_name: `BPTFNotifs-${Date.now()}`,
-        }
+    api_key: process.env.UPTIME_ACCOUNT_API_KEY,
+    format: 'json',
+    id: monitor.id,
+    status: monitor.status == 0 ? 1 : 0
+  } : {
+    api_key: process.env.UPTIME_ACCOUNT_API_KEY,
+    format: 'json',
+    type: '1',
+    url: host,
+    friendly_name: `BPTFNotifs-${Date.now()}`,
+  }
   var options = {
-        method: 'POST',
-        url: `https://api.uptimerobot.com/v2/${createNew ? 'new' : 'edit'}Monitor`,
-        headers:
-        {
-          'content-type': 'application/x-www-form-urlencoded',
-          'cache-control': 'no-cache'
-        },
-        form: formObj
-      }
-      request(options, function(error, response, body) {
-        if (error) throw new Error(error)
+    method: 'POST',
+    url: `https://api.uptimerobot.com/v2/${createNew ? 'new' : 'edit'}Monitor`,
+    headers:
+    {
+      'content-type': 'application/x-www-form-urlencoded',
+      'cache-control': 'no-cache'
+    },
+    form: formObj
+  }
+  request(options, function(error, response, body) {
+    if (error) throw new Error(error)
       /* Debug */ if ((createNew ? logNewMonitor : logEditMonitor)) console.log(body);
-      })
+  })
 }
 module.exports = { createServer }

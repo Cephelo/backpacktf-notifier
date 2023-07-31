@@ -7,9 +7,9 @@ const debug = false
 let ignoreErrors = 0
 async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)) }
 
-async function stopLoop(channel) {
+async function stopLoop(channel, host) {
   console.log(`[${Date.now()}] Stopping!`)
-  await channel.send('To restart me, go to <https://replit.com>, click on your backpacktf-notifier repl project, and click Run.  You can also restart me on the Replit mobile app.')
+  await channel.send(`To restart me, go to <${host}> and wait for the "I'm running!" message to pop up.  You can also restart me directly from replit.com, or the Replit mobile app.`)
   process.exit(0)
 }
 
@@ -18,14 +18,18 @@ async function startIgnore(minutes) {
   console.log(`Ignoring errors for ${minutes} minute${minutes == 1 ? '' : 's'}`)
 }
 
+async function startString(host) {
+  return `**Restarting!**  (I was offline)\n*If I ever go offline, restart me by going to <${host}> and wait for the "I'm running!" message to pop up.  You can also restart me directly from replit.com, or the Replit mobile app.*\n*__Last check: <t:${(Date.now() / 1000).toString().split('.')[0]}:R>__ (Only valid for current session)*`
+}
+
 async function startLoop(bot, channel) {
   if (checkFreq < 10 || !Number.isInteger(checkFreq)) {
     console.log(`"CHECKING_INTERVAL_IN_SECONDS" is set to ${checkFreq}, it must be 10 or more.  Shutting down.`)
     await channel.send(`<@${bot.owner}> \`CHECKING_INTERVAL_IN_SECONDS\` is set to ${checkFreq}, it must be 10 or more.  Stopping!`)
-    stopLoop(channel)
+    stopLoop(channel, bot.host)
   }
-  console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can manually check by using ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they'll appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}stop\n-`)
-  channel.send('Restarting!  (I was offline)')
+  console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can check manually with ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they'll appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}stop\n-`)
+  const startMessage = await channel.send(await startString(bot.host))
 
   let notifs = undefined
   for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
@@ -36,6 +40,7 @@ async function startLoop(bot, channel) {
     }
 
     notifs = await getNotifsJson(`#${i + 1}`, false, channel, 'notifications', bot)
+    await startMessage.edit(await startString(bot.host))
     if (notifs != undefined) {
       /* Debug */ if (debug) console.log(`${notifs.length} unread notification${notifs.length == 1 ? '' : 's'}. (#${i + 1})`)
       if (notifs.length > 0) {

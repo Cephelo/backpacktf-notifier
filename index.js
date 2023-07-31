@@ -30,11 +30,12 @@ let bot = {
   version: package.version,
   invite: '3jfm6XuhyN',
   next: config.NEXT.toString().toLowerCase() == 'true',
-  channelId: config.YOUR_DISCORD_CHANNEL_ID
+  channelId: config.YOUR_DISCORD_CHANNEL_ID,
+  host: `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase()
 }
 
 const { createServer } = require("./util/keepalive.js")
-createServer()
+createServer(bot.host)
 
 // Load messageCreate.js event
 const event = require(`./util/messageCreate.js`)
