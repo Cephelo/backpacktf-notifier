@@ -6,7 +6,6 @@
   "author": "@cephelo",
   "dependencies": {
     "discord.js": "^14.11.0",
-    "dotenv": "^16.3.1",
-    "request": "^2.88.2"
+    "dotenv": "^16.3.1"
   }
 }

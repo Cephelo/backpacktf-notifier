@@ -41,6 +41,7 @@ Choose (or create) the channel you'll want the bot to put pings in, and copy its
 
 Then save the config.json file by pressing CTRL+S (CMD+S on mac).
 
+### 3a. Additional Settings
 You can also change some additional settings: 
 
 If you'd like, you can also change some additional configuration settings:
@@ -70,13 +71,6 @@ Paste this TOKEN into the "DISCORD_BOT_TOKEN" secret, and click the blue save bu
 
 #### 4b. BACKPACKTF_USER_TOKEN
 Go to https://backpack.tf/connections and copy your User Token.  Paste your User Token into the "BACKPACKTF_USER_TOKEN" secret, and click the blue save button.
-
-#### 4c. UPTIME_ACCOUNT_API_KEY
-Make an [UptimeRobot](https://uptimerobot.com/signUp?ref=website-header) account, if you don't already have one.
-
-Once that's done, hover over your profile in the top right corner and click "My Settings".  Scroll down to the "API Settings" box, and click "Show/hide it" under "Main API Key".
-
-Copy this, paste it into the "UPTIME_ACCOUNT_API_KEY" secret, and click the blue save button.
 
 ### 5. Starting the bot
 
