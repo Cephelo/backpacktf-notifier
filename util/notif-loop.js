@@ -49,7 +49,7 @@ async function startLoop(bot, channel) {
         for (const notif of notifs) {
           let mesAmount = notif.bundle.listing.value.short
           if (notif.contents.message.includes(' keys, $') || notif.contents.message.includes(' 1.00 key, ')) {
-            mesAmount = notif.contents.message.split(', ').some(x => x.includes('key'))
+            mesAmount = notif.contents.message.split(', ').find(x => x.includes('key'))
           }
           haveNotifMessage += `\n> ${notif.bundle.listing.intent.substr(0,1).toUpperCase()}${notif.bundle.listing.intent.substr(1)}ing ${notif.bundle.listing.item.baseName} for ${mesAmount}`
         }
