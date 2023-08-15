@@ -1,6 +1,7 @@
 const { Client, GatewayIntentBits, Partials, Collection } = require("discord.js")
 const fs = require("fs")
 const config = JSON.parse(fs.readFileSync(`./config.json`))
+require("dotenv").config()
 
 if (config.YOUR_DISCORD_USER_ID == '' || process.env.DISCORD_BOT_TOKEN == '' || process.env.BACKPACKTF_USER_TOKEN == '' ||
   config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '' ||
@@ -28,14 +29,14 @@ let bot = {
   prefix: config.DISCORD_PREFIX,
   owner: config.YOUR_DISCORD_USER_ID,
   version: package.version,
-  invite: '3jfm6XuhyN',
+  invite: 'https://github.com/Cephelo/backpacktf-notifier/discussions/2',
   next: config.NEXT.toString().toLowerCase() == 'true',
   channelId: config.YOUR_DISCORD_CHANNEL_ID,
   host: `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase()
 }
 
-const { createServer } = require("./util/keepalive.js")
-createServer(bot.host)
+// const { createServer } = require("./util/keepalive.js")
+// createServer(bot.host)
 
 // Load messageCreate.js event
 const event = require(`./util/messageCreate.js`)

@@ -1,7 +1,9 @@
 module.exports = {
     name: "ping",
-    desc: "Measures how fast my connection to Discord is.",
+    desc: "Returns my Discord connection speed, and links the backpack.tf API status and backpack TF2 Inventory API status pages.",
     run: async ({bot, message, args}) => {
-        message.reply({ content: `Pong!  \`Discord Bot Latency: ${Date.now() - message.createdTimestamp}ms\` | \`Discord API Latency: ${Math.round(bot.client.ws.ping)}ms\``, allowedMentions: { repliedUser: false }})
+        if (args != false) args = true
+        message.reply({ content: `${args ? 'Pong!  ' : ''}\`Discord Bot Latency: ${Date.now() - message.createdTimestamp}ms\` | \`Discord API Latency: ${Math.round(bot.client.ws.ping)}ms\`` +
+        `\nbackpack.tf API Status: <https://status.backpack.tf>\nTF2 Inventory API Status: <https://next.backpack.tf/almanac/steam-api-health>`, allowedMentions: { repliedUser: false }})
     }
 }

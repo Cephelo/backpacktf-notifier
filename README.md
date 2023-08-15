@@ -9,9 +9,9 @@ __Note: You don't need to download anything from github, just follow the tutoria
 First of all, you'll need to make your own discord application, and a couple accounts.
 
 ### 1. Create a Discord Application
-First, go to https://discord.com/developers/applications
+First, we need to create the actual discord bot.
 
-Then click "New Application" in the top right, name it whatever you want.
+Go to https://discord.com/developers/applications and click "New Application" in the top right.  Nname the app whatever you want.
 
 Once you've made an application, navigate to the "Bot" tab on the left sidebar, scroll down, and enable the "MESSAGE CONTENT INTENT" switch.
 
@@ -27,11 +27,13 @@ Then copy the Generated URL at the bottom of the page and paste it into your bro
 This will prompt you to choose which server of yours the bot will join.  I recommend making your own server with just you and the bot in it, since it's easy.
 
 ### 3. Replit and Config
+Replit is the service we will use to host the discord bot.  This will ensure you don't need to keep your device running to keep the bot online.  With replit, the bot should be online at least 95% of the time.
+
 Make a [Replit](https://replit.com/signup) account, if you don't already have one.
 
 Once that's done, go to [the public backpacktf-notifier Replit project](https://replit.com/@Cephelo/backpacktf-notifier-public) and click "Fork".
 
-Then once everything has loaded, click the file "config.json" on the left sidebar.  This is where you will enter your Discord User ID, Server ID, and Channel ID.
+When everything has loaded, click the file "config.json" on the left sidebar.  This is where you will enter your Discord User ID, Server ID, and Channel ID.
 
 Go to Discord and copy your User ID by right-clicking your profile picture and clicking "Copy User ID".  __If you don't see this option, enable "Developer Mode" in your Discord Settings.__  Paste your User ID into the empty "YOUR_DISCORD_USER_ID" field, inside the quotes.
 
@@ -53,7 +55,6 @@ If you'd like, you can also change some additional configuration settings:
 If you changed any of these, save the config.json file again.
 
 ### 4. Tokens
-
 Now, click the "Tools" tab near the bottom left corner, and then the "Secrets" button.  
 
 Here you will enter some tokens and keys that the bot requires to function.  DO NOT SHARE THESE ANYWHERE ELSE.
@@ -73,8 +74,7 @@ Paste this TOKEN into the "DISCORD_BOT_TOKEN" secret, and click the blue save bu
 Go to https://backpack.tf/connections and copy your User Token.  Paste your User Token into the "BACKPACKTF_USER_TOKEN" secret, and click the blue save button.
 
 ### 5. Starting the bot
-
 Now we can start the bot.  Click the green "Run" button and watch the console on the right of the screen.  Once the console says "READY!" and you get a ping in the channel you put in the config, you're all set!  The bot will now automatically start checking for unread backpack.tf notifications, even if your computer is off.  It is important to note:  __When the bot detects unread notifications, it will mark them as read.__
 
-## If you need help, have any questions, feedback or suggestions, or just wanna talk, feel free to open an Issue on github, or join the [discord server](https://discord.gg/3jfm6XuhyN).
+## If you need help, have any questions, feedback or suggestions, or just wanna talk, feel free to open an Issue on github, or join the [discord server](https://github.com/Cephelo/backpacktf-notifier/discussions/2).
 Thanks for visiting!
