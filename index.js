@@ -35,8 +35,8 @@ let bot = {
   host: `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase()
 }
 
-// const { createServer } = require("./util/keepalive.js")
-// createServer(bot.host)
+const { createServer } = require("./util/keepalive.js")
+createServer(bot.host)
 
 // Load messageCreate.js event
 const event = require(`./util/messageCreate.js`)
