@@ -10,7 +10,7 @@ async function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)
 
 async function stopLoop(channel, host) {
   console.log(`[${Date.now()}] Stopping!`)
-  await channel.send(`To restart me, go to <${host}> and wait for the "I'm running!" message to pop up.  You can also restart me directly from replit.com, or the Replit mobile app.`)
+  await channel.send(`If I don't auto-restart in 10 minutes, go to <${host}> and wait for the "I'm running!" message to pop up to manually restart me.  You can also restart me directly from replit.com, or the Replit mobile app.`)
   process.exit(0)
 }
 
