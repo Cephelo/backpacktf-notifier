@@ -5,7 +5,7 @@ require("dotenv").config()
 
 if (config.YOUR_DISCORD_USER_ID == '' || process.env.DISCORD_BOT_TOKEN == '' || process.env.BACKPACKTF_USER_TOKEN == '' ||
   config.CHECKING_INTERVAL_IN_SECONDS == '' || config.DISCORD_PREFIX == '' || config.YOUR_DISCORD_SERVER_ID == '' ||
-  config.YOUR_DISCORD_CHANNEL_ID == '' || process.env.UPTIME_ACCOUNT_API_KEY == '') {
+  config.YOUR_DISCORD_CHANNEL_ID == '') {
   const warning = 'WARNING: ONE OR MORE REQUIRED CONFIG VALUES ARE MISSING!  Check the config.json file and Secrets tab under the Tools menu for any missing information.\n'
   console.log(`${warning}${warning}${warning}Once you have added the missing information, you can restart the bot.`)
   process.exit(0)
