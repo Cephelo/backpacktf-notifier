@@ -1,50 +1,54 @@
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-    name: "fullmoon",
-    desc: "Checks when the next Full Moon event is via the official TF2 wiki.",
-    run: async ({bot, message, args}) => {
-
-        const wikiPage = await getPage()
-        const currentEvent = `${wikiPage.split('"/wiki/File:Full_Moon_')[1].split('.png')[0]}`
-        await fmEmbed(currentEvent, wikiPage, message)
-    }
+  name: "fullmoon",
+  desc: "Checks when the next Full Moon event is via the official TF2 wiki.",
+  run: async ({ bot, message, args }) => {
+    const wikiPage = await getPage()
+    const currentEvent = `${wikiPage.split('"/wiki/File:Full_Moon_')[1].split('.png')[0]}`
+    await fmEmbed(currentEvent, wikiPage, message)
+  }
 }
 
 async function getPage() {
-    let fetchJson = await fetch(`https://wiki.teamfortress.com/w/api.php?action=parse&page=Full_Moon`, { method: 'GET' }
-    ).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP Error ${response.status}! (FM)`)
-      }// else console.log(`FM Response OK!`)
-      return response.text()
-    }).catch( err => console.error(`[${Date.now()}] ${err}`) )
-    return fetchJson.toString().split('text": {')[1].split('lunar calendar')[0].split('*": "')[1].toString()
+  const fetchJson = await fetch(`https://wiki.teamfortress.com/w/api.php?action=parse&page=Full_Moon`, { method: 'GET' }
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP Error ${response.status}! (FM)`)
+    }// else console.log(`FM Response OK!`)
+    return response.text()
+  }).catch(err => console.error(`[${Date.now()}] ${err}`))
+  return fetchJson.toString().split('text": {')[1].split('lunar calendar')[0].split('*": "')[1].toString()
 }
 
 async function fmEmbed(num, wikiPage, message) {
-    let fmImageVer = ''
-    switch (num) {
-        case '0': fmImageVer = ["We're not currently in a full moon.", 0xFF0000, 'https://wiki.teamfortress.com/w/images/b/b4/Full_Moon_0.png']; break;
-        case '1': fmImageVer = ["We're currently in a full moon!", 0x191970, 'https://wiki.teamfortress.com/w/images/8/87/Full_Moon_1.png']; break;
-        case '2': fmImageVer = ["We're currently in a Halloween Event!", 0xFF8C00, 'https://wiki.teamfortress.com/w/images/6/6d/Full_Moon_2.png']; break;
-        default: fmImageVer = ["Status could not be retrieved", 0x000000, 'https://wiki.teamfortress.com/w/images/b/b7/Ghost_Yikes%21.png']; break;
-    }
+  let fmImageVer = ''
+  switch (num) {
+    case '0': fmImageVer = ["We're not currently in a full moon.", 0xFF0000, 'https://wiki.teamfortress.com/w/images/b/b4/Full_Moon_0.png']; break;
+    case '1': fmImageVer = ["We're currently in a full moon!", 0x191970, 'https://wiki.teamfortress.com/w/images/8/87/Full_Moon_1.png']; break;
+    case '2': fmImageVer = ["We're currently in a Halloween Event!", 0xFF8C00, 'https://wiki.teamfortress.com/w/images/6/6d/Full_Moon_2.png']; break;
+    default: fmImageVer = ["Status could not be retrieved", 0x000000, 'https://wiki.teamfortress.com/w/images/b/b7/Ghost_Yikes%21.png']; break;
+  }
 
-    let fullMoonEmbed = new EmbedBuilder()
-    fullMoonEmbed.setColor(fmImageVer[1])
-    fullMoonEmbed.setTitle(fmImageVer[0])
-    fullMoonEmbed.setAuthor({ name: 'Pulled directly from the TF2 wiki!' })
-    fullMoonEmbed.setURL('https://wiki.teamfortress.com/wiki/Full_Moon')
-    fullMoonEmbed.setThumbnail(fmImageVer[2])
-    fullMoonEmbed.setFooter({ text: "Disclaimer: The above date and time are computed by formulas internal to the TF2 wiki, and is provided as an estimate only.  " +
-    "Additionally, the times that the game sets for each of its Full Moon holidays can be a day or more before or after the real world Full Moons." })
-    if (num == '0') {
-        const nextFull = `**The next full moon is from ${wikiPage.split('The next full moon is from ')[1].split('(UTC)')[0].trim()}.**`
-        const moreInfo = '\n\n*For more upcoming and previous moon times, please refer to the wiki: https://wiki.teamfortress.com/wiki/Full_Moon*'
-        fullMoonEmbed.setDescription(nextFull.replaceAll('&lt;', '').replaceAll('b>', '').replaceAll('UTC/', '(UTC)')+moreInfo)
-    }
-    await message.channel.send({ embeds: [fullMoonEmbed] })
+  let fullMoonEmbed = new EmbedBuilder()
+  fullMoonEmbed.setColor(fmImageVer[1])
+  fullMoonEmbed.setTitle(fmImageVer[0])
+  fullMoonEmbed.setAuthor({ name: 'Pulled directly from the TF2 wiki!', url: 'https://wiki.teamfortress.com/wiki/Full_Moon' })
+  fullMoonEmbed.setURL('https://wiki.teamfortress.com/wiki/Full_Moon')
+  fullMoonEmbed.setThumbnail(fmImageVer[2])
+  fullMoonEmbed.setFooter({
+    text: "Disclaimer: The above date and time are computed by formulas internal to the TF2 wiki, and is provided as an estimate only.  " +
+      "Additionally, the times that the game sets for each of its Full Moon holidays can be a day or more before or after the real world Full Moons."
+  })
+  if (num == '0') {
+    const dateParts = wikiPage.split('The next full moon is from ')[1].split('(UTC)')[0].trim().replaceAll('&lt;', '').replaceAll('b>', '').split(' UTC/ through to ')
+    function timeStamp(num) { return new Date(dateParts[0].replace(' UTC/', '').replace('at ', '') + ':00') / 1000 }
+    const nextFullMoon = `**The next full moon is from <t:${timeStamp(0)}:F> through to <t:${timeStamp(1)}:F>**, ` +
+      `starting <t:${timeStamp(0)}:R> (approximate).` +
+      '\n\n*For more upcoming and previous moon times, please refer to the wiki: https://wiki.teamfortress.com/wiki/Full_Moon*'
+    fullMoonEmbed.setDescription(nextFullMoon)
+  }
+  await message.channel.send({ embeds: [fullMoonEmbed] })
 }
 
 // I initially planned to do the math myself, but the wiki already does, so i'm using that directly.  Storing the old stuff here just in case.

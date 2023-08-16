@@ -48,6 +48,8 @@ You can also change some additional settings:
 
 If you'd like, you can also change some additional configuration settings:
 - "PING_USER" is a true/false option, and changes whether the bot will actually ping you with notifications, or just send a message.  This is in case you want to set the channel's notification settings to "All Messages" and don't need the extra ping.  True by default.
+- "ERROR_PINGS" is a true/false option, and changes whether the bot will ping you when errors occur.  False by default.
+- "WAKEUP_PINGS" is a true/false option, and changes whether the bot will ping you every time it wakes up.  False by default.
 - "DISCORD_PREFIX" will be the prefix for the commands you use in discord to control the bot.
 - "NEXT" is a true/false option, and changes whether the bot will link to the classic backpack.tf site (false), or the beta next.backpack.tf site (true).  False by default.
 - "CHECKING_INTERVAL_IN_SECONDS" is how often the bot will ping the backpack.tf classifieds API.  *I recommend keeping this value at 30 or higher.*
@@ -75,6 +77,15 @@ Go to https://backpack.tf/connections and copy your User Token.  Paste your User
 
 ### 5. Starting the bot
 Now we can start the bot.  Click the green "Run" button and watch the console on the right of the screen.  Once the console says "READY!" and you get a ping in the channel you put in the config, you're all set!  The bot will now automatically start checking for unread backpack.tf notifications, even if your computer is off.  It is important to note:  __When the bot detects unread notifications, it will mark them as read.__
+
+# Updates
+Occasionally, I may release an update to the bot that adds new features, fixes, or the like.  In such a case, I recommend updating ASAP when a new update comes out.  To accomplish this, all you need to do is re-fork the master repl and reconfigure your secrets and config settings.  Just start from Step 3 as seen above.
+
+You may not have to follow those steps exactly; you could just manually copy over your secrets and config settings from your old repl to the new fork instead.  Do not copy the entire config.json file though, as if the update adds any new config settings, the config.json text you just copied will not have these options, which may cause problems.  Just copy your custom config settings over individually.
+
+Do note that in the event more required Secrets are added in an update, you'll have to follow the revised Steps above to get the necessary information for them.
+
+To re-fork the master repl, go to [the public backpacktf-notifier Replit project](https://replit.com/@Cephelo/backpacktf-notifier-public) and click "Fork".
 
 ## If you need help, have any questions, feedback or suggestions, or just wanna talk, feel free to open an Issue on github, or join the [discord server](https://github.com/Cephelo/backpacktf-notifier/discussions/2).
 Thanks for visiting!

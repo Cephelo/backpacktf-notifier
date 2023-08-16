@@ -2,10 +2,12 @@
   "YOUR_DISCORD_USER_ID": "",
   "YOUR_DISCORD_SERVER_ID": "",
   "YOUR_DISCORD_CHANNEL_ID": "",
-    "note": "The bot will only respond to commands in this channel.",
+  "note": "The bot will only respond to commands in this channel.",
   "PING_USER": "true",
+  "ERROR_PINGS": "false",
+  "WAKEUP_PINGS": "false",
   "DISCORD_PREFIX": "!",
   "NEXT": "false",
   "CHECKING_INTERVAL_IN_SECONDS": "30",
-    "note2": "Checking Interval cannot be less than 10 seconds.  I recommend keeping it 30 or higher."
+  "note2": "Checking Interval cannot be less than 10 seconds.  I recommend keeping it 30 or higher."
 }
