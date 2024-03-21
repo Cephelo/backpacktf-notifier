@@ -69,7 +69,7 @@ async function startLoop(bot, channel) {
   console.log(`[${Date.now()}] Starting!\n-\nI'll check your notifs every ${checkFreq} seconds.\nYou can check manually with ${bot.prefix}check in discord.\nKeep in mind, when I detect unread notifications, they'll appear as read from that point on.\nHere are some of my commands:\n${bot.prefix}commands\n${bot.prefix}help\n${bot.prefix}discord\n-`)
   const startMessage = await channel.send(await startString(bot.host))
 
-  await checkForUpdates(bot, channel)
+  // await checkForUpdates(bot, channel) //DEACTIVATED CUZ SOME WEIRD SHIT HAPPENED WIT IT AND IT'S UNNECESSARY
 
   // Begin notif checks
   let notifs = undefined
