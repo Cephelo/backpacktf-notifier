@@ -1,5 +1,5 @@
-const ignoredCommands = ['ignoreerrors', 'status', 'replit', 'about']
-const duplCommands = [['ping', 'status'], ['repl', 'replit'], ['help', 'about']]
+const ignoredCommands = ['ignoreerrors', 'status', 'replit', 'about', 'adjustments']
+const duplCommands = [['ping', 'status'], ['repl', 'replit'], ['help', 'about'], ['adjusts', 'adjustments']]
 
 module.exports = {
   name: "commands",

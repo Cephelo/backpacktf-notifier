@@ -6,6 +6,8 @@
   "PING_USER": "true",
   "ERROR_PINGS": "false",
   "WAKEUP_PINGS": "false",
+  "ADDITIONAL_PINGS": "true",
+  "REFRESHBP_PINGS": "false",
   "DISCORD_PREFIX": "!",
   "NEXT": "false",
   "CHECKING_INTERVAL_IN_SECONDS": "30",

@@ -12,7 +12,7 @@ async function createServer(bot, isMaster) {
   }).listen(8080)
   if (!isMaster) {
     console.log(`Webserver online!  Running at ${bot.host}`)
-    for (let i = 0; i < Number.MAX_SAFE_INTEGER; i++) {
+    while (true) {
       checkHTTPKARepl(bot.host, false)
       await delay(300000) // Every 5 Minutes
     }
@@ -22,12 +22,12 @@ async function createServer(bot, isMaster) {
 async function writeFile(starting, req) {
   if (logHTTPRequests) {
     let log = ''
-    if (fs.existsSync('./util/http-log.txt')) log = fs.readFileSync(`./util/http-log.txt`)
+    if (fs.existsSync('./util/logs/http-log.txt')) log = fs.readFileSync(`./util/logs/http-log.txt`)
     const now = new Date(Date.now())
-    if (starting) fs.writeFileSync('./util/http-log.txt', `${log}[${now.toTimeString().substr(0, 8)} ${now.toDateString().split(' 202')[0]}] ${req}\n`, (err) => { if (err) console.log(err) })
+    if (starting) fs.writeFileSync('./util/logs/http-log.txt', `${log}[${now.toTimeString().substring(0, 8)} ${now.toDateString().split(' 202')[0]}] ${req}\n`, (err) => { if (err) console.log(err) })
     else {
       let header = req.rawHeaders[req.rawHeaders.indexOf('User-Agent') + 1]
-      fs.writeFileSync('./util/http-log.txt', `${log}[${now.toTimeString().substr(0, 8)} ${now.toDateString().split(' 202')[0]}] ${req.method} ${header}\n`, (err) => { if (err) console.log(err) })
+      fs.writeFileSync('./util/logs/http-log.txt', `${log}[${now.toTimeString().substring(0, 8)} ${now.toDateString().split(' 202')[0]}] ${req.method} ${header}\n`, (err) => { if (err) console.log(err) })
     }
   }
 }

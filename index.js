@@ -44,10 +44,10 @@ else {
     channelId: config.YOUR_DISCORD_CHANNEL_ID,
     host: `http://${process.env.REPL_SLUG}.${process.env.REPL_OWNER}.repl.co`.toLowerCase()
   }
-
+/* DEPRECATED CUZ REPL DEVS REMOVED KEEPALIVE, DEPLOYMENTS ONLY NOW
   if (`${process.env.REPL_SLUG}` != 'undefined') createServer(bot, false)
   else console.log('Local environment, skipping webserver stuff')
-
+*/
   // Load messageCreate.js event
   const event = require(`./util/messageCreate.js`)
   client.on("messageCreate", (message) => {
@@ -99,7 +99,7 @@ else {
     try { startLoop(bot, channel) }
     catch (e) {
       console.error(`[${Date.now()}] (startLoop) ${e}`)
-      channel.send(`${config.ADDITIONAL_PINGS.toLowerCase() == 'true' ? true : false ? '<@' + bot.owner + '> ' : ''}__An error has occurred__: ${e}`)
+      channel.send(`${config.ADDITIONAL_PINGS.toLowerCase() == 'true' ? '<@' + bot.owner + '> ' : ''}__An error has occurred__: ${e}`)
     }
   }
 }
